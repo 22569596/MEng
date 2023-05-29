@@ -14,8 +14,8 @@ The envisioned control that will be exercised on the sailboat will consist of bu
 The project requires the following skills to fully develop the control system and hardware platform
   1. Control Systems
   2. Simulink/Matlab Modeling
-  3. C++ Application development
-  4. C# Onboard Firmware to Control sailboat
+  3. C# Application development
+  4. C++ Firmware to Control sailboat
   5. Hardware development
   
     A. PIXHAWK flght controller
