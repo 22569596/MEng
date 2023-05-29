@@ -15,7 +15,7 @@ The project requires the following skills to fully develop the control system an
   1. Control Systems
   2. Simulink/Matlab Modeling
   3. C++ Application development
-  4. C++ Onboard Firmware to Control sailboat
+  4. C# Onboard Firmware to Control sailboat
   5. Hardware development
   
     A. PIXHAWK flght controller
