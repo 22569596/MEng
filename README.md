@@ -24,6 +24,9 @@ The project requires the following skills to fully develop the control system an
     
     C. Wirelles Radio communication between sailboat and base station
     
- (Coming Soon)
- 
- Proposed Research Article 
+# Simulations
+
+I have implemented a full navigation system on a non-linear sailboat model in Matlab. Die sim is used as a platform to test different control strategies and the overall navigation capabilities of the sailboat. The simulation also comes with a visualizer. Below is a example of the xy-plot of the sailboat navigation between waypoints.
+
+![indirectTack](https://github.com/22569596/MEng/assets/88770560/39192fb2-cb90-4e42-b07d-d6c6e2b82c2f)
+
