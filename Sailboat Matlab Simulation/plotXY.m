@@ -1,3 +1,3 @@
-plot(y.data,x.data);
+plot(x.data,y.data);
 axis equal
 grid on
