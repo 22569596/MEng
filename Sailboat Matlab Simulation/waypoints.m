@@ -1,6 +1,6 @@
 % Waypoints
-Waypoints.x = [0,100,100,0,500];
-Waypoints.y = [0,0,-100,0,500];
-Waypoints.R = [50,10,10,10,16];
+Waypoints.x = [0,-200,-200,200,0,100];
+Waypoints.y = [0,0,-40,0,0,100];
+Waypoints.R = [50,20,20,20,20,20];
 waypoint = 0;
-Waypoints.number= [0,1,2,3,4];
+Waypoints.number= [0,1,2,3,4,5];
