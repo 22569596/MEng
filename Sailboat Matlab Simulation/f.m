@@ -34,13 +34,13 @@ delta_sbar = V_in(2);
 y_w = V_in(3);
 
 % evaluate the matrix M and C in the model
-M_RB = [ par.m 0 0 0 ; 0 par.m 0 0 ; 0 0 par.Ixx -par.Ixz ; 0 0 -par.Ixz par.Izz];
-C_RB = [0 -par.m*r 0 0 ; par.m*r 0 0 0 ; 0 0 0 0 ; 0 0 0 0];
+M_RB = [ par.m 0 0 0 ; 0 par.m -par.m*0.03 par.m*0.15 ; 0 -par.m*0.03 par.Ixx 0  ; 0 -par.m*0.15  0 par.Izz];
+C_RB = [0 0 par.m*r*0.03 -par.m*(0.15*r+v) ; 0 0 0 par.m*u ; par.m*r*0.03 0 0 0 ;par.m*(0.15*r+v) -par.m*u 0 0];
+%par.m*(0.15*r+v)
+M_A = [par.a11 0 0 0;0 par.a22 par.a24 par.a26;0 par.a24 par.a44 0;0 par.a26 0 par.a66];
+C_A = [0  0 0 par.a22*nu(2) ; 0 0 0 -par.a11*nu(1) ; 0 0 0 par.a22*nu(2) ; -par.a22*nu(2) par.a11*nu(1) par.a22*nu(2) 0];
 
-M_A = [par.a11 0 0 0;0 par.a22 par.a24 par.a26;0 par.a24 par.a44 par.a46;0 par.a26 par.a46 par.a66];
-C_A = [0  0 0 -par.a22*nu(2)-par.a24*nu(3)-par.a26*nu(4) ; 0 0 0 par.a11*nu(1) ; 0 0 0 0 ; par.a22*nu(2)+par.a24*nu(3)+par.a26*nu(4) -par.a11*nu(1) 0 0];
-
-M = M_RB + M_A;
+M = M_RB - M_A;
 
 % calculate the tau vector, ie forces and moments generated from:
 % the sail
@@ -53,11 +53,11 @@ V_in = [ u ; v ; 0 ];
 V_awb = v_tb - V_in - cross([p;0;r],[par.xs;par.ys;par.zs]);
 V_awu = V_awb(1);
 V_awv = V_awb(2);
-alpha_aw = atan2(V_awv,-V_awu);
+alpha_aw = atan2(real(V_awv),real(-V_awu));
 alpha_aw = alpha_aw;
 
 % Sail Angle Controller
-delta_s = 0.5 * alpha_aw;
+delta_s = 0.5 * alpha_aw+ 0.25*phi;
 
 % Extreme Seek Sail Controller 
 
@@ -103,7 +103,7 @@ Mzs = tau_sail(4);
 % the rudder
 v_aru = -u+r*par.yr;
 v_arv = -v-r*par.xr + p*par.zr;
-alpha_ar = atan2(v_arv,-v_aru);
+alpha_ar = atan2(real(v_arv),real(-v_aru));
 alpha_a = alpha_ar-delta_r;
 [Clr,Cdr] = ruddercoef(alpha_a);
 Cdr = Cdr+Clr^2*par.Ar/(pi*2*par.zeta_r*par.d_r^2);
@@ -121,7 +121,7 @@ tau = tau_sail + tau_rudder;
 % from the keel
 v_aku = -u + r*par.yk;
 v_akv = -v - r*par.xk+p*par.zk;
-alpha_ak = atan2(v_akv,-v_aku);
+alpha_ak = atan2(real(v_akv),real(-v_aku));
 alpha_e = alpha_ak;
 [Clk,Cdk] = keelcoef(alpha_e);
 Cdk = Cdk + Clk^2*par.Ak/(pi*2*par.zeta_k*par.d_k^2);
@@ -135,7 +135,7 @@ D_keel = [ -Lk*sin(alpha_ak)+Dk*cos(alpha_ak); -Lk*cos(alpha_ak)-Dk*sin(alpha_ak
 v_ahu = -u + r*par.yh;
 v_ahv = (-v-r*par.xh + p*par.zh)/cos(phi);
 v_ah = sqrt(v_aku^2+v_akv^2);
-alpha_ah = atan2(v_ahv,-v_ahu);
+alpha_ah = atan2(real(v_ahv),real(-v_ahu));
 Frh = resistancehull(v_ah);
 
 D_hull = [Frh*cos(alpha_ah);-Frh*sin(alpha_ah)*cos(phi); Frh*sin(alpha_ah)*cos(phi)*par.zh; -Frh*sin(alpha_ah)*cos(phi)*par.xh];
@@ -156,15 +156,19 @@ D = D_keel + D_hull + D_heelandyaw;
 phi_deg = phi*180/pi;
 M_xw = -y_w*par.w_c*par.y_bm*cos(phi);
 M_zw = -y_w*par.w_c*par.x_c*sin(abs(phi));
-G = [ 0 ; 0 ; par.a*phi_deg^2+par.b*phi_deg + M_xw ; M_zw];
-
+G = [ 0 ; 0 ; 0;0];
+%
 % computation of nu_dot
-nu_dot = -M\(C_RB*nu+C_A*nu)-M\D-M\G+M\tau; 
- 
+nu_dot = -M\(C_RB*nu+C_A*nu)+M\tau;
+nu_dot =nu_dot/100;
+nu_dot(3)=0;
+eta_dot(3)=0;
+%nu_dot = -M\(C_RB*nu+C_A*nu)-M\D-M\G+M\tau; 
+
 % output the derivative of the state extended with the sail angle
-X_dot_ext = [ eta_dot   ; 
-              nu_dot   ;
-              delta_s];
+X_dot_ext = [ real(eta_dot)   ; 
+              real(nu_dot)   ;
+              real(delta_s)];
 
 
 %------------------------------------------------------------------------------------------------------------------------------
