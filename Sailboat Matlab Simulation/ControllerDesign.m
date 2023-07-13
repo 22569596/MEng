@@ -8,7 +8,7 @@ Hs = K / (T *s^2 + s);
 
 %% Design Specifications
 Ts = 2;
-overshoot = 0.1;
+overshoot = 0.01;
 
 %% PID Calculation
 zeta = sqrt(log(overshoot)^2/(pi^2 +log(overshoot)^2));
@@ -41,7 +41,7 @@ b=0.01;
 
 Cs = Kpid * (s+a) * (s+b) / s
 
-rlocus(Cs*Hs);
+%rlocus(Cs*Hs);
 
 
 

@@ -1,0 +1,90 @@
+% Change wind angle to follow same convection as waypoint heading, ranges
+% from -180 -> 180
+theta_pw = theta_pw *180/pi;
+if WA<0
+   WA = WA + 360;
+end
+if wayPointHeading<0 
+    wayPointHeading = wayPointHeading +360;
+end
+% Tack Direct==0 or Indirect==1
+indirect=0;
+% Apparent Wind Angle
+AWA = wayPointHeading - WA;
+% Determine the state of sailboat
+if      abs(AWA)<45
+        
+ % State 1: Tacking   
+           % Initialize tacking right
+           if(abs(tackHeading)<15)
+                % Set tack angle to the right
+                y=WA+45;
+                % State value
+                tack=0.5;
+                % Tack Distance D
+                tackDistance=15;
+                % Tack Right Angle
+                tackRight=WA+45;
+                % Tack LEft Angle
+                tackLeft=WA-45;
+                tackSide=1;
+           elseif indirect==1
+               % Reference heading
+               y=WA-45;
+               % State value
+               tack=2;
+               % Indirect Tack
+               if tackToWaypoint == 1
+                    y = WA+45;
+                    tackSide=1;
+               elseif tackToWaypoint == 0
+                    y = WA-45;
+                    tackSide=0;
+               else 
+                   y=wayPointHeading;
+                   tackSide=2;
+               end
+               
+               tackDistance=15;
+                % Tack Right Angle
+                tackRight=WA+45;
+                % Tack LEft Angle
+                tackLeft=WA-45;
+           else
+               % Reference heading
+               y=tackHeading;
+               if tackHeading>0
+                   tackSide=1;
+               else
+                    tackSide=0;
+               end
+               % State value
+               tack=1;
+               % Tack Right Angle
+               tackRight=WA+45;
+               % Tack LEft Angle
+               tackLeft=WA-45;
+               % Tack Distance D
+               tackDistance=15;
+           end
+
+% State 0: Normal Sail 
+else 
+        % State Value
+        tack=0;
+        % Reference Heading
+        y=pathTrajectory;
+        % Reset tacking distance
+        tackDistance=15;
+        % Reset Right tack angle
+        tackRight=WA+45;
+        % Reset Left tack angle
+        tackLeft=WA-45;
+        tackSide=2;
+end
+if w_p ==1 
+    %y = theta_pw;
+    if (ys-w_p)>180
+    %y = theta_pw+360;
+    end
+end
