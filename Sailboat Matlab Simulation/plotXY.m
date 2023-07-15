@@ -1,3 +1,3 @@
 plot(out.x.data,out.y.data);
-axis equal
+%axis equal
 grid on
