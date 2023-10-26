@@ -79,6 +79,7 @@ DEF sea_level Transform {
 DEF Yacht Group {
   children DEF Hull_EarthFixed Transform {
     translation -7.34509 0 -17.9628
+    scale 0.08 0.08 0.08
     children [
       DEF Rot_Yaw Transform {
         rotation -0 -1 -0 -2.8096
