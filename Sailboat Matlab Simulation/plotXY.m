@@ -11,7 +11,7 @@ end
 i=1;
 DYaw(i)=0;
 for x=1:1:length(ATT)
-   % if (ATT(x,2)/1000000>93 && ATT(x,2)/1000000<102)
+   % if (ATT(x,2)/1000000>109 && ATT(x,2)/1000000<113)
     DYaw(i)=Yaw(x);
     i=i+1;
     %end
@@ -28,15 +28,15 @@ hold on
 i=1;
 DYawRate(i)=0;
 for x=1:1:length(STER)
-    %if (STER(x,2)/1000000>93 && STER(x,2)/1000000<102)
+   % if (STER(x,2)/1000000>109 && STER(x,2)/1000000<113)
     DYawRate(i)=STER(x,8);
     i=i+1;
-    %end
+   % end
 end
 %Plot Desired Yaw Rate
 nexttile
 hold on 
-X_DYawRate = 1:1*5:(length(DYaw)-5);
+X_DYawRate = 1:1*5:(length(DYaw));
 plot(X_DYawRate,DYawRate)
 grid on
 xlabel("Sample(n)")
@@ -46,14 +46,15 @@ title("Yaw Rate");
 i=1;
 DRudderAngle(i)=0;
 for x=1:1:length(RCOU)
-   % if (RCOU(x,2)/1000000>93 && RCOU(x,2)/1000000<102)
+   %if (RCOU(x,2)/1000000>109 && RCOU(x,2)/1000000<113)
     DRudderAngle(i)=RCOU(x,11);
     i=i+1;
-    %end
+   % end
 end
 % Plot Rudder Angle
 nexttile
-Rudder_Angle =  (DRudderAngle-1500)/400*27;
+Rudder_Angle =  (DRudderAngle-1500)/400*30;
+X_DYawRate = 1:1*5:(length(DYaw));
 plot(X_DYawRate,Rudder_Angle);
 grid on
 xlabel("Sample(n)")
@@ -62,10 +63,10 @@ title("Rudder Angle");
 i=1;
 DRollAngle(i)=0;
 for x=1:1:length(ATT)
-    %if (ATT(x,2)/1000000>94 && ATT(x,2)/1000000<102)
+   % if (ATT(x,2)/1000000>109 && ATT(x,2)/1000000<113)
     DRollAngle(i)=ATT(x,4)-6;
     i=i+1;
-    %end
+   % end
 end
 % Plot Roll Angle
 nexttile
@@ -78,10 +79,10 @@ title("Roll Angle");
 i=1;
 DSpeed(i)=0;
 for x=1:1:length(XKF1_1)
-   % if (XKF1_1(x,2)/1000000>94 && XKF1_1(x,2)/1000000<102)
+   % if (XKF1_1(x,2)/1000000>109 && XKF1_1(x,2)/1000000<113)
     DSpeed(i)=sqrt(XKF1_1(x,7).^2+XKF1_1(x,8).^2);
     i=i+1;
-    %end
+   % end
 end
 
 %Plot speed of boat
@@ -100,10 +101,10 @@ xlabel("Sample(n)")
 i=1;
 Dyaw_accel(i)=0;
 for x=2:1:length(IMU_0)
-   % if (IMU_0(x,2)/1000000>93 && IMU_0(x,2)/1000000<102)
+   % if (IMU_0(x,2)/1000000>109 && IMU_0(x,2)/1000000<113)
     Dyaw_accel(i)=(IMU_0(x,6)-IMU_0(x-1,6))/((IMU_0(x,2)-IMU_0(x-1,2))/1000000);
     i=i+1;
-    %end
+   % end
 end
 plot(Dyaw_accel)
 

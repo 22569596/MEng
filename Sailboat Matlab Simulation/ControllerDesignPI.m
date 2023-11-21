@@ -6,7 +6,7 @@ Hs = K / (T *s + 1);
 
 %% Specification
 Overshoot = 0;
-ts = 2.5;
+ts = 0.5;
 if Overshoot==0
     zeta = 1;
 else
@@ -18,10 +18,13 @@ wn = 4/ts;
 sigma = -wn; 
 
 %% Zero Placement
-Ki_Kp=0.1;
+Ki_Kp=0.2;
 
 %% Gain rule 
-Kp = (0.02594*sigma+1)*sigma/(0.1011*(sigma+Ki_Kp))
+Kp = abs(((T*sigma+1)*sigma)/(K*(sigma+Ki_Kp)))
 Ki = Ki_Kp * Kp
 
-Ds = Hs* (Kp*(s+Ki/Kp))/s
+Ds = Hs* (Kp*(s+Ki/Kp))/s;
+rltool(Ds)
+%
+
