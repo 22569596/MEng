@@ -2,7 +2,7 @@
 i=1;
 DYawRate(i)=0;
 for x=1:1:length(STER)
-    if (STER(x,2)/1000000>107 && STER(x,2)/1000000<113)
+    if (STER(x,2)/1000000>93 && STER(x,2)/1000000<102)
     DYawRate(i)=STER(x,8);
     i=i+1;
     end
@@ -21,7 +21,7 @@ plot(time,yawRate)
 i=1;
 DRudderAngle(i)=0;
 for x=1:1:length(RCOU)
-    if (RCOU(x,2)/1000000>107 && RCOU(x,2)/1000000<113)
+    if (RCOU(x,2)/1000000>93 && RCOU(x,2)/1000000<102)
     DRudderAngle(i)=RCOU(x,11);
     i=i+1;
     end
